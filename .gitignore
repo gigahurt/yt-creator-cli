@@ -1,0 +1,21 @@
+target/
+*.class
+*.jar
+!.mvn/wrapper/*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# Secrets - never commit these
+client_secrets.json
+tokens/
+StoredCredential
+
+# OS
+.DS_Store
+Thumbs.db
