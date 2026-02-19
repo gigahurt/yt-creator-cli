@@ -6,7 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record AppProperties(
     String clientSecretsPath,
     String tokensDirectory,
-    String applicationName
+    String applicationName,
+    String channelId
 ) {
     public AppProperties {
         if (clientSecretsPath == null || clientSecretsPath.isBlank()) {

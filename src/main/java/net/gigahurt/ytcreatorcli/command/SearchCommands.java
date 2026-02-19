@@ -4,6 +4,7 @@ import org.springframework.shell.core.command.annotation.Command;
 import org.springframework.shell.core.command.annotation.Option;
 import org.springframework.stereotype.Component;
 
+import net.gigahurt.ytcreatorcli.config.AppProperties;
 import net.gigahurt.ytcreatorcli.model.VideoSearchResult;
 import net.gigahurt.ytcreatorcli.service.YouTubeService;
 
@@ -13,18 +14,21 @@ import java.util.List;
 public class SearchCommands {
 
     private final YouTubeService youTubeService;
+    private final AppProperties props;
 
-    public SearchCommands(YouTubeService youTubeService) {
+    public SearchCommands(YouTubeService youTubeService, AppProperties props) {
         this.youTubeService = youTubeService;
+        this.props = props;
     }
 
     @Command(name = "search-videos", description = "Search videos of a specific YouTube channel")
     public String searchVideos(
-            @Option(longName = "channel-id", description = "YouTube channel ID", required = true) String channelId,
+            @Option(longName = "channel-id", description = "YouTube channel ID (or set YTCLI_CHANNEL_ID)", defaultValue = "") String channelId,
             @Option(longName = "query", description = "Optional search query", defaultValue = "") String query,
             @Option(longName = "max-results", description = "Max results (1-50)", defaultValue = "10") Long maxResults) {
         try {
-            List<VideoSearchResult> results = youTubeService.searchVideos(channelId, query, maxResults);
+            String resolvedChannelId = resolveChannelId(channelId);
+            List<VideoSearchResult> results = youTubeService.searchVideos(resolvedChannelId, query, maxResults);
 
             if (results.isEmpty()) {
                 return "No videos found.";
@@ -46,11 +50,12 @@ public class SearchCommands {
 
     @Command(name = "list-videos", description = "List all videos on a channel (including private/unlisted)")
     public String listVideos(
-            @Option(longName = "channel-id", description = "YouTube channel ID", required = true) String channelId,
+            @Option(longName = "channel-id", description = "YouTube channel ID (or set YTCLI_CHANNEL_ID)", defaultValue = "") String channelId,
             @Option(longName = "query", description = "Optional filter by title/description", defaultValue = "") String query,
             @Option(longName = "max-results", description = "Max results", defaultValue = "50") Long maxResults) {
         try {
-            var results = youTubeService.listChannelVideos(channelId, query, maxResults);
+            String resolvedChannelId = resolveChannelId(channelId);
+            var results = youTubeService.listChannelVideos(resolvedChannelId, query, maxResults);
 
             if (results.isEmpty()) {
                 return "No videos found.";
@@ -68,6 +73,16 @@ public class SearchCommands {
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
+    }
+
+    private String resolveChannelId(String channelId) {
+        if (channelId != null && !channelId.isEmpty()) {
+            return channelId;
+        }
+        if (props.channelId() != null && !props.channelId().isEmpty()) {
+            return props.channelId();
+        }
+        throw new IllegalArgumentException("No channel ID provided. Use --channel-id or set YTCLI_CHANNEL_ID");
     }
 
     private String truncate(String s, int max) {
