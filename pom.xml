@@ -62,10 +62,38 @@
     </dependencies>
 
     <build>
+        <finalName>ytc</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-executable-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo file="${project.build.directory}/launch.sh">#!/bin/bash
+exec java $JAVA_OPTS -jar "$0" "$@"
+exit $?
+</echo>
+                                <concat destfile="${project.build.directory}/ytc" binary="true">
+                                    <fileset file="${project.build.directory}/launch.sh"/>
+                                    <fileset file="${project.build.directory}/ytc.jar"/>
+                                </concat>
+                                <chmod file="${project.build.directory}/ytc" perm="755"/>
+                                <delete file="${project.build.directory}/launch.sh"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
