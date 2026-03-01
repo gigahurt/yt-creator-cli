@@ -23,8 +23,8 @@ public class SearchCommands {
 
     @Command(name = "search-videos", description = "Search videos of a specific YouTube channel")
     public String searchVideos(
-            @Option(longName = "channel-id", description = "YouTube channel ID (or set YTCLI_CHANNEL_ID)", defaultValue = "") String channelId,
-            @Option(longName = "query", description = "Optional search query", defaultValue = "") String query,
+            @Option(longName = "channel-id", description = "YouTube channel ID (or set YTCLI_CHANNEL_ID)") String channelId,
+            @Option(longName = "query", description = "Optional search query") String query,
             @Option(longName = "max-results", description = "Max results (1-50)", defaultValue = "10") Long maxResults) {
         try {
             String resolvedChannelId = resolveChannelId(channelId);
@@ -50,8 +50,8 @@ public class SearchCommands {
 
     @Command(name = "list-videos", description = "List all videos on a channel (including private/unlisted)")
     public String listVideos(
-            @Option(longName = "channel-id", description = "YouTube channel ID (or set YTCLI_CHANNEL_ID)", defaultValue = "") String channelId,
-            @Option(longName = "query", description = "Optional filter by title/description", defaultValue = "") String query,
+            @Option(longName = "channel-id", description = "YouTube channel ID (or set YTCLI_CHANNEL_ID)") String channelId,
+            @Option(longName = "query", description = "Optional filter by title/description") String query,
             @Option(longName = "max-results", description = "Max results", defaultValue = "50") Long maxResults) {
         try {
             String resolvedChannelId = resolveChannelId(channelId);

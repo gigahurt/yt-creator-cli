@@ -60,4 +60,9 @@ public class OAuth2Service {
         cachedCredential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
         return cachedCredential;
     }
+
+    public synchronized Credential reauthorize() throws Exception {
+        cachedCredential = null;
+        return authorize();
+    }
 }

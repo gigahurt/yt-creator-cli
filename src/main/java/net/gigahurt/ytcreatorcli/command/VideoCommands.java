@@ -38,16 +38,16 @@ public class VideoCommands {
     @Command(name = "update-video", description = "Update video title, description, tags, visibility, and more")
     public String updateVideo(
             @Option(longName = "video-id", description = "YouTube video ID", required = true) String videoId,
-            @Option(longName = "title", description = "New title", defaultValue = "") String title,
-            @Option(longName = "description", description = "New description", defaultValue = "") String description,
-            @Option(longName = "tags", description = "Comma-separated tags", defaultValue = "") String tags,
-            @Option(longName = "category-id", description = "Category ID (e.g. 20=Gaming, 24=Entertainment)", defaultValue = "") String categoryId,
-            @Option(longName = "language", description = "Default language for title/description (e.g. en)", defaultValue = "") String defaultLanguage,
-            @Option(longName = "audio-language", description = "Default audio language (e.g. en)", defaultValue = "") String defaultAudioLanguage,
-            @Option(longName = "visibility", description = "public, private, or unlisted", defaultValue = "") String visibility,
-            @Option(longName = "made-for-kids", description = "true or false", defaultValue = "") String madeForKids,
-            @Option(longName = "publish-at", description = "ISO 8601 datetime (e.g. 2026-03-01T15:00:00Z)", defaultValue = "") String publishAt,
-            @Option(longName = "thumbnail", description = "Path to thumbnail image file", defaultValue = "") String thumbnail) {
+            @Option(longName = "title", description = "New title") String title,
+            @Option(longName = "description", description = "New description") String description,
+            @Option(longName = "tags", description = "Comma-separated tags") String tags,
+            @Option(longName = "category-id", description = "Category ID (e.g. 20=Gaming, 24=Entertainment)") String categoryId,
+            @Option(longName = "language", description = "Default language for title/description (e.g. en)") String defaultLanguage,
+            @Option(longName = "audio-language", description = "Default audio language (e.g. en)") String defaultAudioLanguage,
+            @Option(longName = "visibility", description = "public, private, or unlisted") String visibility,
+            @Option(longName = "made-for-kids", description = "true or false") String madeForKids,
+            @Option(longName = "publish-at", description = "ISO 8601 datetime (e.g. 2026-03-01T15:00:00Z)") String publishAt,
+            @Option(longName = "thumbnail", description = "Path to thumbnail image file") String thumbnail) {
         try {
             List<String> tagList = null;
             if (tags != null && !tags.isEmpty()) {
